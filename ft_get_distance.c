@@ -73,14 +73,14 @@ void	get_distance(t_map *map)
 	y_max = ft_sort_max(map -> rot.y, map);
 	x_min = ft_sort_min(map -> rot.x, map);
 	y_min = ft_sort_min(map -> rot.y, map);
-	if (1920 / (x_max - x_min) < 1080 / (y_max - y_min))
+/*	if (1920 / (x_max - x_min) < 1080 / (y_max - y_min))
 		map -> distance = 1920 / (x_max - x_min);
 	else
-		map -> distance = 1080 / (y_max - y_min);
+		map -> distance = 1080 / (y_max - y_min);*/
 	while (i < map -> x * map -> y)
 	{
-		map -> rot.x[i] = (map -> rot.x[i] - x_min) * map -> distance;
-		map -> rot.y[i] = (map -> rot.y[i] - y_min) * map -> distance;
+		map -> rot.x[i] = (map -> rot.x[i] - x_min) * (map -> distance + 1);
+		map -> rot.y[i] = (map -> rot.y[i] - y_min) * (map -> distance + 1);
 		i++;
 	}
 	ft_map_move(map);

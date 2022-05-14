@@ -11,6 +11,15 @@
 #define ESC         53
 #define KeyPress    2
 #define KeyRelease  3
+#define zoom_in		69
+#define	zoom_out	78
+#define Q			12
+#define W			13
+#define E			14
+#define A			0
+#define S			1
+#define D			2
+#define SPACE		49
 
 //color main지우기:
 typedef struct s_draw
@@ -47,7 +56,7 @@ typedef struct s_map
 	int	**val;
 	int	x;
 	int	y;
-	int	distance;
+	double	distance;
 	int	*color;
 	double	deg_x;
 	double	deg_y;

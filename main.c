@@ -17,6 +17,22 @@ int	ft_key_press(int keycode, t_map *map)
    		map -> move_y -= 10;
   	if (keycode == DOWN && ft_sort_max(map -> rot.y, map) + map -> move_y + 10 < 1440)
     	map -> move_y += 10;
+    if (keycode == zoom_in)// && ft_sort_max(map -> rot.x, map) * map ->distance < 2560 && (ft_sort_max(map -> rot.y, map) - 1440/2) * map -> distance < 1440)
+    	map -> distance += 0.6;
+    if (keycode == zoom_out && map -> distance - 0.2 > 0)
+    	map -> distance -= 0.2;
+    if (keycode == W)
+    	map -> deg_x += PI / 30;
+    if (keycode == S)
+    	map -> deg_x -= PI / 30;
+    if (keycode == A)
+    	map -> deg_z -= PI / 30;
+    if (keycode == D)
+    	map -> deg_z += PI / 30;
+    if (keycode == Q)
+    	map -> deg_y -= PI / 30;
+    if (keycode == E)
+    	map -> deg_y += PI / 30;
 	return (0);
 }
 void	ft_clear_map(t_map *map)
@@ -43,8 +59,10 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	dst = data -> addr + (y * data -> line_length + x * (data -> bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
+#include <unistd.h>
 int	main_loop(t_map *map)
 {
+	//write(1,"1",1);
 	ft_clear_map(map);
 	free(map -> rot.x);
 	free(map -> rot.y);
