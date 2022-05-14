@@ -4,26 +4,44 @@
 #include <fcntl.h>
 #include "libft.h"
 #include "fdf.h"
-char	*get_next_line(int fd);
-void	ft_free_double(char **str)
+int	sort_max(int *arr, t_map *map)
 {
-	int	i;
+	int		i;
+	int	temp;
+	int	max;
 
 	i = 0;
-	while (str[i])
-		i++;
-	while (i >= 0)
+	if (map -> x * map -> y == 1)
+		return (arr[i]);
+	max = arr[i];
+	while (i < map -> x * map -> y)
 	{
-		free(str[i]);
-		i--;
+		temp = arr[i];
+		if (temp > max)
+			max = temp;
+		i++;
 	}
-	free(str);
+	return (max);
 }
 
-void	ft_error(const char *str)
+int	sort_min(int *arr, t_map *map)
 {
-	printf("%s\n",str);
-	exit(1);
+	int		i;
+	int	temp;
+	int	min;
+
+	i = 0;
+	if (map ->x * map -> y == 1)
+		return (arr[i]);
+	min = arr[i];
+	while (i < map -> x * map -> y)
+	{
+		temp = arr[i];
+		if (temp < min)
+			min = temp;
+		i++;
+	}
+	return (min);
 }
 
 int	ft_map_len(char **str)
@@ -56,8 +74,8 @@ void	map_error(char *fdf, t_map *map)
 		split_line = ft_split(line,' ');
 		if (i == 0)
 			i = ft_map_len(split_line);
-		if (i != ft_map_len(split_line))
-			ft_error("Error : map is not rectangle");
+//		if (i != ft_map_len(split_line))
+//			ft_error("Error : map is not rectangle");
 		y++;
 		free(line);
 		ft_free_double(split_line);
@@ -71,11 +89,13 @@ void	make_mapval(int	fd, t_map *map)
 {
 	char	*line;
 	char	**split_line;
-	int		i;
+	int		y;
 	int		x;
+	int		i;
 
 	i = 0;
-	while (i < map -> y)
+	y = 0;
+	while (y < map -> y)
 	{
 		x = 0;
 		line = get_next_line(fd);
@@ -84,12 +104,36 @@ void	make_mapval(int	fd, t_map *map)
 		split_line = ft_split(line, ' ');
 		while(x < map -> x)
 		{
-			map -> val[i][x] = ft_atoi(split_line[x]);
+			map -> val[y][x] = ft_atoi(split_line[x]);
+			map -> color[i++] = map -> val[y][x];
 			x++;
 		}
-		i++;
+		y++;
 		free(line);
 		ft_free_double(split_line);
+	}
+}
+
+void	get_color(t_map *map)
+{
+	int	i;
+	int	max;
+	int	min;
+
+	i = 0;
+	max = sort_max(map -> color, map);
+	min = sort_min(map -> color, map);
+	while (i < map -> x * map -> y)
+	{
+		if (map -> color[i] <= (max - min) / 4)
+			map -> color[i] = create_trgb(0,0,0,255);
+		else if (map -> color[i] <= (max - min) / 2)
+			map -> color[i] = create_trgb(0,0,255,0);
+		else if (map -> color[i] <= (max - min) / 4 * 3)
+			map -> color[i] = create_trgb(0,255,0,0);
+		else
+			map -> color[i] = create_trgb(1,150,150,150);
+		i++;
 	}
 }
 
@@ -102,7 +146,8 @@ void	map_parsing(char *fdf, t_map *map)
 	map_error(fdf, map);
 	fd = open(fdf, O_RDONLY);
 	map -> val = (int **)malloc(sizeof(int *) * map -> y);
-	if (!(map -> val))
+	map -> color = (int *)malloc(sizeof(int) * (map -> x * map -> y));
+	if (!(map -> val) || !(map -> color))
 		ft_error("Error : malloc fail");
 	while (i < map -> y)
 	{
@@ -112,5 +157,6 @@ void	map_parsing(char *fdf, t_map *map)
 		i++;
 	}
 	make_mapval(fd, map);
+	get_color(map);
 	close(fd);
 }

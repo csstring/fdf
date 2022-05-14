@@ -1,68 +1,93 @@
 #include "fdf.h"
 #include <unistd.h>
-void	ft_x_axis(int start_x, int start_y, int end_x, t_draw *val, t_data *img)
+void	ft_x_axis(t_draw *val, t_data *img)
 {
 	int	det;
 
 	det = 2 * val -> h - val -> w;
-	while (start_x != end_x)
+	while (val->start_x != val -> end_x)
 	{
 		if (det < 0)
 			det += 2 *val -> h;
 		else
 		{
-			start_y += val -> factor_y;
+			val -> start_y += val -> factor_y;
 			det += 2 * val->h - 2 * val->w;
 		}
-		my_mlx_pixel_put(img, start_x, start_y, 0x00FF0000);
-		start_x += val -> factor_x;
+		my_mlx_pixel_put(img, val -> start_x, val -> start_y, val -> color);
+		val -> start_x += val -> factor_x;
 	}
 }
 
-void	ft_y_axis(int start_x, int start_y, int end_y, t_draw *val,t_data *img)
+void	ft_y_axis(t_draw *val, t_data *img)
 {
 
 	int	det;
 
 	det = 2 * val->w - val->h;
-	while (start_y != end_y)
+	while (val->start_y != val->end_y)
 	{
 		if (det < 0)
 			det += 2 * val->w;
 		else
 		{
-			start_x += val -> factor_x;
+			val->start_x += val -> factor_x;
 			det += 2 *val->w - 2 * val -> h;
 		}
-		my_mlx_pixel_put(img, start_x, start_y, 0x000000FF);
-		start_y += val -> factor_y;
+		my_mlx_pixel_put(img, val->start_x, val->start_y, val -> color);
+		val -> start_y += val -> factor_y;
 	}
 }
-void	ft_factor(int start_x, int start_y, int	end_x, int end_y, t_data *img)
-{
-	t_draw	val;
 
-	val.w = abs(start_x - end_x);
-	val.h = abs(start_y - end_y);
-	if (start_x > end_x)
-		val.factor_x = -1;
+void	ft_get_val(t_map *map, int i, t_draw *val, int check)
+{	
+	val -> start_x = map -> rot.x[i];
+	val -> start_y = map -> rot.y[i];
+	if (check == 1)
+	{
+		val->end_x = map -> rot.x[i + 1];
+		val->end_y = map -> rot.y[i + 1];
+		if (map -> color[i] > map -> color[i + 1])
+				val -> color = map -> color[i];
+		else
+			val -> color = map -> color[i + 1];
+	}
 	else
-		val.factor_x = 1;
-	if (start_y > end_y)
-		val.factor_y = -1;
-	else
-		val.factor_y = 1;
-	if (val.w > val.h)
-		ft_x_axis(start_x, start_y, end_x, &val, img);
-	else
-		ft_y_axis(start_x, start_y, end_y, &val, img);
+	{
+		val->end_x = map -> rot.x[i + map -> x];
+		val->end_y = map -> rot.y[i + map -> x];
+		if (map -> color[i] > map -> color[i + map -> x])
+			val -> color = map -> color[i];
+		else
+			val -> color = map -> color[i + map -> x];
+	}
 }
 
-void	ft_draw_line(t_map *map, t_data *img)
+void	ft_factor(t_map *map, int i,t_draw *val, t_data *img, int check)
+{
+	ft_get_val(map, i, val, check);
+	val->w = abs(val -> start_x - val -> end_x);
+	val->h = abs(val -> start_y - val -> end_y);
+	if (val -> start_x > val -> end_x)
+		val->factor_x = -1;
+	else
+		val->factor_x = 1;
+	if (val -> start_y > val -> end_y)
+		val->factor_y = -1;
+	else
+		val->factor_y = 1;
+	if (val->w > val->h)
+		ft_x_axis(val, img);
+	else
+		ft_y_axis(val, img);
+}
+
+void	ft_draw_line(t_map *map)
 {
 	int	x;
 	int	y;
 	int	i;
+	t_draw	val;
 
 	i = 0;
 	y = 0;
@@ -72,9 +97,9 @@ void	ft_draw_line(t_map *map, t_data *img)
 		while (x < map -> x)
 		{
 			if (x != map -> x - 1)
-				ft_factor(map->rot.x[i], map->rot.y[i], map->rot.x[i + 1], map->rot.y[i + 1], img);
+				ft_factor(map, i, &val, map -> win, 1);
 			if (y != map -> y - 1)
-				ft_factor(map->rot.x[i], map->rot.y[i], map->rot.x[i + map -> x], map -> rot.y[i + map -> x], img);
+				ft_factor(map, i, &val, map -> win, 2);
 			x++;
 			i++;
 		}
