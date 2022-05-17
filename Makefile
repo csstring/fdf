@@ -6,12 +6,12 @@
 #    By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/20 17:04:36 by schoe             #+#    #+#              #
-#    Updated: 2022/05/16 12:42:10 by schoe            ###   ########.fr        #
+#    Updated: 2022/05/17 21:23:17 by schoe            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 SRCS = ft_ultoa.c ft_u_convert_base.c ft_printf_utils.c ft_printf.c
 OBJS = ${SRCS:.c=.o}
 RM = rm -f

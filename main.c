@@ -23,6 +23,18 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
+	if (y < 0)
+		while (y < 0)
+			y += 1440;
+	else if (y > 1439)
+		while (y > 1439)
+			y -= 1439;
+	if (x < 0)
+		while (x < 0)
+			x += 2560;
+	else if (x > 2559)
+		while (x > 2559)
+			x -= 2559;
 	dst = data -> addr + (y * data -> line_length + x * (data -> bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }

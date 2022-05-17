@@ -6,7 +6,7 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 12:06:15 by schoe             #+#    #+#             */
-/*   Updated: 2022/05/16 12:19:31 by schoe            ###   ########.fr       */
+/*   Updated: 2022/05/17 21:50:08 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 void	ft_x_axis(t_draw *val, t_data *win)
 {
 	int	det;
+/*	size_t	i;
 
+	i = 1410;
+	if (val -> start_y < -1400)
+		i = 2810;*/
 	det = 2 * val -> h - val -> w;
 	while (val -> start_x != val -> end_x)
 	{
@@ -26,7 +30,12 @@ void	ft_x_axis(t_draw *val, t_data *win)
 			val -> start_y += val -> factor_y;
 			det += 2 * val->h - 2 * val->w;
 		}
-		my_mlx_pixel_put(win, val -> start_x, val -> start_y, val -> color);
+	/*	if (val -> start_y < 20)
+			my_mlx_pixel_put(win, val -> start_x, val -> start_y + i, val -> color);
+		else if (val -> start_y > 1420)
+			my_mlx_pixel_put(win, val -> start_x, val -> start_y - i,val -> color);
+		else*/
+			my_mlx_pixel_put(win, val -> start_x, val -> start_y, val -> color);
 		val -> start_x += val -> factor_x;
 	}
 }
@@ -35,7 +44,11 @@ void	ft_y_axis(t_draw *val, t_data *win)
 {
 
 	int	det;
+//	size_t	i;
 
+/*	i = 1410;
+	if (val -> start_y < -1400)
+		i = 2810;*/
 	det = 2 * val -> w - val -> h;
 	while (val -> start_y != val -> end_y)
 	{
@@ -46,7 +59,12 @@ void	ft_y_axis(t_draw *val, t_data *win)
 			val -> start_x += val -> factor_x;
 			det += 2 *val->w - 2 * val -> h;
 		}
-		my_mlx_pixel_put(win, val -> start_x, val -> start_y, val -> color);
+		/*if (val -> start_y < 20)
+			my_mlx_pixel_put(win, val -> start_x, val -> start_y + i, val -> color);
+		else if (val -> start_y > 1420)
+			my_mlx_pixel_put(win, val -> start_x, val -> start_y - i, val -> color);
+		else*/
+			my_mlx_pixel_put(win, val -> start_x, val -> start_y, val -> color);
 		val -> start_y += val -> factor_y;
 	}
 }

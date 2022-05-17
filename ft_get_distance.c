@@ -6,7 +6,7 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 12:20:23 by schoe             #+#    #+#             */
-/*   Updated: 2022/05/16 22:51:34 by schoe            ###   ########.fr       */
+/*   Updated: 2022/05/17 20:48:59 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	get_distance(t_map *map)
 	while (i < map -> x * map -> y)
 	{
 		map -> rot.x[i] += 1000 + map -> move_x;
-		map -> rot.y[i] += 600 + map -> move_y;
+		map -> rot.y[i] += 20 + map -> move_y;
 		i++;
 	}
 }
