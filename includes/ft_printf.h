@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/16 12:25:04 by schoe             #+#    #+#             */
-/*   Updated: 2022/05/16 12:25:11 by schoe            ###   ########.fr       */
+/*   Created: 2022/04/15 21:49:54 by schoe             #+#    #+#             */
+/*   Updated: 2022/04/18 21:18:26 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "fdf.h"
 
-int		create_trgb(int t, int r, int g, int b)
-{
-	return (t << 24 | r << 16 | g << 8 | b);
-}
-int	get_t(int trgb)
-{
-	return ((trgb >> 24) & 0xFF);
-}
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
+# include <stdlib.h>
+# include <stdarg.h>
 
-int	get_r(int trgb)
-{
-	return ((trgb >> 16) & 0xFF);
-}
+int		ft_printf(const char *arg, ...);
+int		ft_type(va_list *ap, char type);
+int		ft_c(char c);
+int		ft_s(char *str);
+int		ft_p(void *p);
+int		ft_xu(unsigned int ud, char type);
+int		ft_di(int i);
 
-int	get_g(int trgb)
-{
-	return ((trgb >> 8) & 0xFF);
-}
-
-int	get_b(int trgb)
-{
-	return (trgb & 0xFF);
-}
+char	*ft_ultoa(size_t n);
+char	*ft_u_convert_base(char *nbr, char *base_from, char *base_to);
+#endif

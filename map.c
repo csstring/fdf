@@ -4,9 +4,9 @@
 #include <fcntl.h>
 #include "libft.h"
 #include "fdf.h"
-int	sort_max(int *arr, t_map *map)
+int	int_max(int *arr, t_map *map)
 {
-	int		i;
+	int	i;
 	int	temp;
 	int	max;
 
@@ -24,14 +24,14 @@ int	sort_max(int *arr, t_map *map)
 	return (max);
 }
 
-int	sort_min(int *arr, t_map *map)
+int	int_min(int *arr, t_map *map)
 {
-	int		i;
+	int	i;
 	int	temp;
 	int	min;
 
 	i = 0;
-	if (map ->x * map -> y == 1)
+	if (map -> x * map -> y == 1)
 		return (arr[i]);
 	min = arr[i];
 	while (i < map -> x * map -> y)
@@ -74,15 +74,15 @@ void	map_error(char *fdf, t_map *map)
 		split_line = ft_split(line,' ');
 		if (i == 0)
 			i = ft_map_len(split_line);
-//		if (i != ft_map_len(split_line))
-//			ft_error("Error : map is not rectangle");
+		if (i != ft_map_len(split_line))
+			ft_error("Error : map is not rectangle");
 		y++;
 		free(line);
 		ft_free_double(split_line);
 	}
 	close(fd);
-	map->x = i;
-	map->y = y;
+	map -> x = i;
+	map -> y = y;
 }
 
 void	make_mapval(int	fd, t_map *map)
@@ -121,8 +121,8 @@ void	get_color(t_map *map)
 	int	min;
 
 	i = 0;
-	max = sort_max(map -> color, map);
-	min = sort_min(map -> color, map);
+	max = int_max(map -> color, map);
+	min = int_min(map -> color, map);
 	while (i < map -> x * map -> y)
 	{
 		if (map -> color[i] <= (max - min) / 4)
@@ -159,4 +159,8 @@ void	map_parsing(char *fdf, t_map *map)
 	make_mapval(fd, map);
 	get_color(map);
 	close(fd);
+	//아래는 전체적으로 초기화 하는 함수 파야할듯?
+	map -> deg_x = -0.615472907;
+	map -> deg_y = PI / 4;
+	map -> deg_z = 0;
 }

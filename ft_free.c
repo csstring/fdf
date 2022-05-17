@@ -14,9 +14,3 @@ void	ft_free_double(char **str)
 	}
 	free(str);
 }
-
-void	ft_error(const char *str)
-{
-	printf("%s\n", str);
-	exit(1);
-}

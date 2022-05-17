@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/16 12:33:43 by schoe             #+#    #+#             */
+/*   Updated: 2022/05/16 22:52:35 by schoe            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 #include <stdio.h>
@@ -10,7 +22,6 @@
 #define	RIGHT       124
 #define ESC         53
 #define KeyPress    2
-#define KeyRelease  3
 #define zoom_in		69
 #define	zoom_out	78
 #define Q			12
@@ -19,9 +30,11 @@
 #define A			0
 #define S			1
 #define D			2
-#define SPACE		49
+#define one			18
+#define two			19
+#define three		20
+#define four		21
 
-//color main지우기:
 typedef struct s_draw
 {
 	int	w;
@@ -41,6 +54,7 @@ typedef struct s_rotate
 	double	*y;
 	double	*z;
 } t_rotate;
+
 typedef struct s_data
 {
 	void	*img;
@@ -51,6 +65,7 @@ typedef struct s_data
 	void	*mlx;
 	void	*mlx_win;
 }	t_data;
+
 typedef struct s_map
 {
 	int	**val;
@@ -64,31 +79,47 @@ typedef struct s_map
 	double	move_x;
 	double	move_y;
 	t_rotate	rot;
-	t_data	*win;
+	t_data	win;
 }	t_map;
-void	ft_free_double(char **str);
-void	ft_error(const char *str);
+//map
 int		ft_map_len(char **str);
 void	map_error(char *fdf, t_map *map);
 void	make_mapval(int	fd, t_map *map);
 void	map_parsing(char *fdf, t_map *map);
+void	get_color(t_map *map);
+int		int_min(int *arr, t_map *map);
+int		int_max(int *arr, t_map *map);
+void	ft_clear_map(t_map *map);
+//pixel
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+//deg, rotate
 void	ft_rotate(t_map *map);
+void	ft_rot_x(double x, double y, double z, t_map *map, int i);
+void	ft_rot_y(double x, double y, double z, t_map *map, int i);
+void	ft_rot_z(double x, double y, double z, t_map *map, int i);
+//draw
 void	ft_draw_line(t_map *map);
-void	ft_factor(t_map *map, int i,t_draw *val, t_data *img, int check);
+void	ft_factor(t_map *map, int i,t_draw *val, t_data *win, int check);
 void	ft_y_axis(t_draw *val, t_data *img);
 void	ft_x_axis(t_draw *val, t_data *img);
 void	ft_get_val(t_map *map, int i, t_draw *val, int check);
+//distance
 void	get_distance(t_map *map);
-double	ft_sort_min(double *arr, t_map *map);
-double	ft_sort_max(double *arr, t_map *map);
-void	ft_rotate(t_map *map);
-char	*get_next_line(int fd);
-void	ft_free_double(char **);
-void	ft_error(const char *str);//ft_printf_로 수정
+double	double_min(double *arr, t_map *map);
+double	double_max(double *arr, t_map *map);
+//color
 int		create_trgb(int t, int r, int g, int b);
-int	get_t(int trgb);
-int	get_r(int trgb);
-int	get_g(int trgb);
-int	get_b(int trgb);
+int		get_t(int trgb);
+int		get_r(int trgb);
+int		get_g(int trgb);
+int		get_b(int trgb);
+//key
+void	ft_key_parallel(int	keycode, t_map *map);
+void	ft_key_deg(int keycode, t_map *map);
+int		ft_key_press(int keycode, t_map *map);
+
+void	ft_free_double(char **str);
+void	ft_error(char *str);
+void	ar_error(int ac, char **av);
+
 #endif
