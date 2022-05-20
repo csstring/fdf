@@ -6,49 +6,36 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 12:06:15 by schoe             #+#    #+#             */
-/*   Updated: 2022/05/17 21:50:08 by schoe            ###   ########.fr       */
+/*   Updated: 2022/05/20 16:45:30 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <unistd.h>
+#include "libft.h"
+
 void	ft_x_axis(t_draw *val, t_data *win)
 {
 	int	det;
-/*	size_t	i;
 
-	i = 1410;
-	if (val -> start_y < -1400)
-		i = 2810;*/
 	det = 2 * val -> h - val -> w;
 	while (val -> start_x != val -> end_x)
 	{
 		if (det < 0)
-			det += 2 *val -> h;
+			det += 2 * val -> h;
 		else
 		{
 			val -> start_y += val -> factor_y;
 			det += 2 * val->h - 2 * val->w;
 		}
-	/*	if (val -> start_y < 20)
-			my_mlx_pixel_put(win, val -> start_x, val -> start_y + i, val -> color);
-		else if (val -> start_y > 1420)
-			my_mlx_pixel_put(win, val -> start_x, val -> start_y - i,val -> color);
-		else*/
-			my_mlx_pixel_put(win, val -> start_x, val -> start_y, val -> color);
+		my_mlx_pixel_put(win, val -> start_x, val -> start_y, val -> color);
 		val -> start_x += val -> factor_x;
 	}
 }
 
 void	ft_y_axis(t_draw *val, t_data *win)
 {
-
 	int	det;
-//	size_t	i;
 
-/*	i = 1410;
-	if (val -> start_y < -1400)
-		i = 2810;*/
 	det = 2 * val -> w - val -> h;
 	while (val -> start_y != val -> end_y)
 	{
@@ -57,14 +44,9 @@ void	ft_y_axis(t_draw *val, t_data *win)
 		else
 		{
 			val -> start_x += val -> factor_x;
-			det += 2 *val->w - 2 * val -> h;
+			det += 2 * val->w - 2 * val -> h;
 		}
-		/*if (val -> start_y < 20)
-			my_mlx_pixel_put(win, val -> start_x, val -> start_y + i, val -> color);
-		else if (val -> start_y > 1420)
-			my_mlx_pixel_put(win, val -> start_x, val -> start_y - i, val -> color);
-		else*/
-			my_mlx_pixel_put(win, val -> start_x, val -> start_y, val -> color);
+		my_mlx_pixel_put(win, val -> start_x, val -> start_y, val -> color);
 		val -> start_y += val -> factor_y;
 	}
 }
@@ -93,7 +75,7 @@ void	ft_get_val(t_map *map, int i, t_draw *val, int check)
 	}
 }
 
-void	ft_factor(t_map *map, int i,t_draw *val, t_data *win, int check)
+void	ft_factor(t_map *map, int i, t_draw *val, int check)
 {
 	ft_get_val(map, i, val, check);
 	val -> w = abs(val -> start_x - val -> end_x);
@@ -107,18 +89,19 @@ void	ft_factor(t_map *map, int i,t_draw *val, t_data *win, int check)
 	else
 		val -> factor_y = 1;
 	if (val -> w > val -> h)
-		ft_x_axis(val, win);
+		ft_x_axis(val, &(map -> win));
 	else
-		ft_y_axis(val, win);
+		ft_y_axis(val, &(map -> win));
 }
 
 void	ft_draw_line(t_map *map)
 {
-	int	x;
-	int	y;
-	int	i;
+	int		x;
+	int		y;
+	int		i;
 	t_draw	val;
 
+	ft_memset(&val, 0, sizeof(t_draw));
 	i = 0;
 	y = 0;
 	while (y < map -> y)
@@ -127,9 +110,9 @@ void	ft_draw_line(t_map *map)
 		while (x < map -> x)
 		{
 			if (x != map -> x - 1)
-				ft_factor(map, i, &val, &(map -> win), 1);
+				ft_factor(map, i, &val, 1);
 			if (y != map -> y - 1)
-				ft_factor(map, i, &val, &(map -> win), 2);
+				ft_factor(map, i, &val, 2);
 			x++;
 			i++;
 		}

@@ -6,15 +6,16 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 12:25:04 by schoe             #+#    #+#             */
-/*   Updated: 2022/05/16 12:25:11 by schoe            ###   ########.fr       */
+/*   Updated: 2022/05/20 14:51:25 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "fdf.h"
 
-int		create_trgb(int t, int r, int g, int b)
+int	create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
+
 int	get_t(int trgb)
 {
 	return ((trgb >> 24) & 0xFF);
